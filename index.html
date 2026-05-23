@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crash Game - Play Now</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #0b0b0b 0%, #1a1a2e 100%);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+header h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, #00ff88, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header p {
+  font-size: 18px;
+  color: #bbb;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.game-section {
+  background: rgba(29, 29, 29, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.info-section {
+  background: rgba(29, 29, 29, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 204, 255, 0.1);
+  border: 1px solid rgba(0, 204, 255, 0.2);
+}
+
+.game-box {
+  background: #252525;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.small {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+#multi {
+  font-size: 80px;
+  font-weight: bold;
+  margin: 40px 0;
+  transition: 0.15s;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+#points {
+  font-size: 28px;
+  margin: 20px 0;
+  color: #00ff88;
+}
+
+.controls {
+  margin: 30px 0;
+}
+
+.bet-control {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.bet-control label {
+  color: #bbb;
+  font-size: 16px;
+}
+
+input {
+  font-size: 18px;
+  width: 120px;
+  padding: 12px;
+  text-align: center;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 10px;
+  background: #1a1a1a;
+  color: white;
+  transition: all 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#startBtn {
+  background: linear-gradient(45deg, #00ff88, #00cc66);
+  color: black;
+  font-weight: 900;
+}
+
+#startBtn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4);
+}
+
+#cashBtn {
+  background: linear-gradient(45deg, #00ccff, #0088ff);
+  color: black;
+  font-weight: 900;
+}
+
+#cashBtn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 204, 255, 0.4);
+}
+
+button:disabled {
+  background: #444 !important;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+#msg {
+  min-height: 50px;
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border-left: 4px solid #00ff88;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.info-section h2 {
+  margin: 25px 0 15px 0;
+  color: #00ff88;
+  font-size: 22px;
+  border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+  padding-bottom: 10px;
+}
+
+.info-section h3 {
+  margin: 15px 0 8px 0;
+  color: #00ccff;
+}
+
+.info-section p {
+  color: #bbb;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.info-section ul {
+  list-style: none;
+  margin: 15px 0;
+}
+
+.info-section li {
+  color: #bbb;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.info-section li:before {
+  content: "▸";
+  color: #00ff88;
+  font-size: 18px;
+  position: absolute;
+  left: 0;
+}
+
+.share-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+}
+
+.twitter-share {
+  background: #1DA1F2;
+  color: white;
+}
+
+.twitter-share:hover {
+  box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+}
+
+.copy-share {
+  background: #00ff88;
+  color: black;
+  font-weight: bold;
+}
+
+.copy-share:hover {
+  box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stat-box {
+  background: rgba(0, 255, 136, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 24px;
+  color: #00ff88;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  color: #666;
+  font-size: 14px;
+}
+
+footer a {
+  color: #00ff88;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+footer a:hover {
+  color: #00ccff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>🎮 Crash Game</h1>
+    <p>Test your timing with fake points. Cash out before it crashes!</p>
+  </header>
+
+  <div class="content">
+    
+    <!-- Game Section -->
+    <div class="game-section">
+      <div class="game-box">
+        
+        <p class="small">Fake points only • No real money</p>
+        
+        <h2 id="points">Points: 1000</h2>
+
+        <div id="multi">1.00x</div>
+
+        <div class="controls">
+          <div class="bet-control">
+            <label for="betInput">Bet Amount:</label>
+            <input id="betInput" type="number" value="50" min="1">
+          </div>
+
+          <div class="button-group">
+            <button id="startBtn">Start Game</button>
+            <button id="cashBtn" disabled>Cash Out</button>
+          </div>
+        </div>
+
+        <div id="msg">Press Start to begin.</div>
+
+        <div class="stats">
+          <div class="stat-box">
+            <div class="stat-label">Max Multiplier</div>
+            <div class="stat-value" id="maxMult">1.00x</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Games Played</div>
+            <div class="stat-value" id="gamesPlayed">0</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+      
+      <h2>How to Play</h2>
+      
+      <h3>📋 Rules</h3>
+      <ul>
+        <li>Start with 1000 fake points</li>
+        <li>Place your bet</li>
+        <li>Watch the multiplier climb</li>
+        <li>Cash out before it crashes</li>
+        <li>Winnings = Bet × Multiplier</li>
+      </ul>
+
+      <h3>⚡ Game Mechanics</h3>
+      <ul>
+        <li>55% - Low crashes (1-2.7x)</li>
+        <li>28% - Medium runs (2.7-7.7x)</li>
+        <li>13% - High crashes (7-22x)</li>
+        <li>4% - Rare runs (20-120x)</li>
+      </ul>
+
+      <h3>💡 Strategy Tips</h3>
+      <ul>
+        <li>Most games crash early - be cautious</li>
+        <li>Occasional spikes can be huge</li>
+        <li>Know when to lock in your winnings</li>
+        <li>Have fun with the fake points!</li>
+      </ul>
+
+      <div class="share-section">
+        <h2>Share the Game</h2>
+        <p style="margin-bottom: 15px; color: #aaa;">Challenge your friends!</p>
+        <div class="share-buttons">
+          <button class="share-btn twitter-share" onclick="shareTwitter()">
+            𝕏 Tweet
+          </button>
+          <button class="share-btn copy-share" onclick="copyLink()">
+            📋 Copy Link
+          </button>
+        </div>
+        <p id="copyConfirm" style="margin-top: 10px; color: #00ff88; font-size: 13px; display: none;">
+          ✓ Link copied to clipboard!
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Made with ❤️ • <a href="https://github.com/rykisgeorge/Crash-out" target="_blank">View on GitHub</a></p>
+  </footer>
+
+</div>
+
+<script>
+
+let points = 1000;
+let bet = 0;
+let multiplier = 1;
+let crashAt = 2;
+let running = false;
+let timer = null;
+let maxMultiplier = 1;
+let gamesPlayed = 0;
+
+const pointsEl = document.getElementById("points");
+const betInput = document.getElementById("betInput");
+const multiEl = document.getElementById("multi");
+const msgEl = document.getElementById("msg");
+const startBtn = document.getElementById("startBtn");
+const cashBtn = document.getElementById("cashBtn");
+const maxMultEl = document.getElementById("maxMult");
+const gamesEl = document.getElementById("gamesPlayed");
+
+function updateScreen() {
+  pointsEl.textContent = "Points: " + Math.floor(points);
+  multiEl.textContent = multiplier.toFixed(2) + "x";
+
+  if (multiplier >= 25) {
+    multiEl.style.color = "#ff00ff";
+    multiEl.style.transform = "scale(1.25)";
+  } else if (multiplier >= 10) {
+    multiEl.style.color = "#ff6600";
+    multiEl.style.transform = "scale(1.18)";
+  } else if (multiplier >= 5) {
+    multiEl.style.color = "#ffaa00";
+    multiEl.style.transform = "scale(1.12)";
+  } else if (multiplier >= 2) {
+    multiEl.style.color = "#00ff88";
+    multiEl.style.transform = "scale(1.05)";
+  } else {
+    multiEl.style.color = "white";
+    multiEl.style.transform = "scale(1)";
+  }
+
+  if (multiplier > maxMultiplier) {
+    maxMultiplier = multiplier;
+    maxMultEl.textContent = maxMultiplier.toFixed(2) + "x";
+  }
+}
+
+function getCrashPoint() {
+  const r = Math.random();
+  if (r < 0.55) return 1.01 + Math.random() * 1.7;
+  if (r < 0.83) return 2.7 + Math.random() * 5;
+  if (r < 0.96) return 7 + Math.random() * 15;
+  return 20 + Math.random() * 100;
+}
+
+function chaoticJump() {
+  const r = Math.random();
+  if (r < 0.60) return 0.05 + Math.random() * multiplier * 0.35;
+  if (r < 0.88) return 0.3 + Math.random() * multiplier * 0.9;
+  return 1 + Math.random() * multiplier * 2;
+}
+
+function startGame() {
+  if (running) return;
+
+  bet = Number(betInput.value);
+
+  if (!bet || bet <= 0) {
+    msgEl.textContent = "❌ Enter a bet amount first.";
+    return;
+  }
+
+  if (bet > points) {
+    msgEl.textContent = "❌ Not enough points for that bet!";
+    return;
+  }
+
+  points -= bet;
+  multiplier = 1;
+  crashAt = getCrashPoint();
+  running = true;
+  gamesPlayed++;
+
+  startBtn.disabled = true;
+  cashBtn.disabled = false;
+  betInput.disabled = true;
+
+  msgEl.textContent = "🚀 Game running... Cash out or crash!";
+
+  updateScreen();
+  gamesEl.textContent = gamesPlayed;
+
+  timer = setInterval(() => {
+    multiplier += chaoticJump();
+
+    if (Math.random() < 0.04) {
+      multiplier += Math.random() * 15;
+    }
+
+    if (multiplier >= crashAt) {
+      clearInterval(timer);
+      multiplier = crashAt;
+      running = false;
+
+      msgEl.textContent =
+        "💥 CRASHED at " +
+        crashAt.toFixed(2) +
+        "x! You lost " +
+        Math.floor(bet) +
+        " points.";
+
+      startBtn.disabled = false;
+      cashBtn.disabled = true;
+      betInput.disabled = false;
+
+      updateScreen();
+      return;
+    }
+
+    updateScreen();
+  }, 650);
+}
+
+function cashOut() {
+  if (!running) return;
+
+  clearInterval(timer);
+  running = false;
+
+  const winnings = bet * multiplier;
+  points += winnings;
+
+  msgEl.textContent =
+    "✓ Cashed out at " +
+    multiplier.toFixed(2) +
+    "x and won " +
+    Math.floor(winnings) +
+    " points! Great job! 🎉";
+
+  startBtn.disabled = false;
+  cashBtn.disabled = true;
+  betInput.disabled = false;
+
+  updateScreen();
+}
+
+function shareTwitter() {
+  const text = "I just played Crash Game! 🎮 Can you beat my best multiplier of " + maxMultiplier.toFixed(2) + "x? Try it now!";
+  const url = "https://rykisgeorge.github.io/Crash-out/";
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  window.open(twitterUrl, "_blank", "width=550,height=420");
+}
+
+function copyLink() {
+  const url = "https://rykisgeorge.github.io/Crash-out/";
+  navigator.clipboard.writeText(url).then(() => {
+    const copyMsg = document.getElementById("copyConfirm");
+    copyMsg.style.display = "block";
+    setTimeout(() => {
+      copyMsg.style.display = "none";
+    }, 2000);
+  });
+}
+
+startBtn.addEventListener("click", startGame);
+cashBtn.addEventListener("click", cashOut);
+
+updateScreen();
+
+</script>
+
+</body>
+</html>
